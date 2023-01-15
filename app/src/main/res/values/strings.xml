@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MemoTest</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Mes codes</string>
+    <string name="second_fragment_label">Détails</string>
+    <string name="third_fragment_label">Ajout de code</string>
+    <string name="visu">Visu details</string>
+
+    <string name="text_first_fragment">Liste</string>
+    <string name="text_third_fragment">Ajout code</string>
+    <string name="text_second_fragment">Visu code</string>
+    <string name="retour">retour liste</string>
+</resources>

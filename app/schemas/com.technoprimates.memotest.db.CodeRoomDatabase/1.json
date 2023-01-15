@@ -1,0 +1,52 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "0917054c4f17dbf64e73b55d5814a6c6",
+    "entities": [
+      {
+        "tableName": "codes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `cName` TEXT, `codeValue` TEXT, `codeCategory` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "codeId",
+            "columnName": "cId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codeName",
+            "columnName": "cName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "codeValue",
+            "columnName": "codeValue",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "codeCategory",
+            "columnName": "codeCategory",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "cId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0917054c4f17dbf64e73b55d5814a6c6')"
+    ]
+  }
+}
