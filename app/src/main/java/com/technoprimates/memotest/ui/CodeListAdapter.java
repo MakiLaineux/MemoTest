@@ -57,6 +57,7 @@ public class CodeListAdapter extends RecyclerView.Adapter<CodeListAdapter.ViewHo
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int listPosition) {
         holder.item_dbId.setText(String.valueOf(codeList.get(listPosition).getCodeId()));
         holder.item_rvId.setText(String.valueOf(listPosition));
+        holder.item_categ.setText(codeList.get(listPosition).getCodeCategory());
         holder.item_codeName.setText(codeList.get(listPosition).getCodeName());
         holder.item_codeVal.setText(codeList.get(listPosition).getCodeValue());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +77,7 @@ public class CodeListAdapter extends RecyclerView.Adapter<CodeListAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView item_dbId;
         TextView item_rvId;
+        TextView item_categ;
         TextView item_codeName;
         TextView item_codeVal;
 
@@ -83,6 +85,7 @@ public class CodeListAdapter extends RecyclerView.Adapter<CodeListAdapter.ViewHo
             super(itemView);
             item_dbId = itemView.findViewById(R.id.dbId);
             item_rvId = itemView.findViewById(R.id.rvId);
+            item_categ = itemView.findViewById(R.id.categ);
             item_codeName = itemView.findViewById(R.id.codeName);
             item_codeVal = itemView.findViewById(R.id.codeVal);
         }

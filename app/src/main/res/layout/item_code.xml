@@ -16,28 +16,64 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/dbId"
+            android:id="@+id/txtdbId"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="30dp"
             android:gravity="center_vertical"
             android:text="dbId"
-            android:textSize="16sp"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toStartOf="@+id/dbId"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/txtrvId"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:text="rvId"
+            android:textSize="11sp"
             app:layout_constraintEnd_toStartOf="@+id/rvId"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtdbId" />
+        <TextView
+            android:id="@+id/dbId"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:text="dbId"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toStartOf="@+id/categ"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/txtdbId"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/rvId"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="30dp"
             android:gravity="center_vertical"
             android:text="rvId"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toStartOf="@+id/categ"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/txtrvId"
+            app:layout_constraintTop_toBottomOf="@id/dbId" />
+
+        <TextView
+            android:id="@+id/categ"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:text="category"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/codeName"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/dbId"
+            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintStart_toEndOf="@id/rvId"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -48,8 +84,8 @@
             android:text="codename"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/codeVal"
-            app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toEndOf="@id/rvId"
+            app:layout_constraintHorizontal_weight="8"
+            app:layout_constraintStart_toEndOf="@id/categ"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
