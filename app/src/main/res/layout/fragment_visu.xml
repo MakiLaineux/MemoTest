@@ -22,13 +22,37 @@
         android:id="@+id/value_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
         android:text="valeur Id"
         android:textSize="24sp"
         android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/label_id"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label_categ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:text="Catégorie"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_id" />
+        app:layout_constraintTop_toBottomOf="@+id/value_id" />
+
+
+    <TextView
+        android:id="@+id/value_categ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="Valeur catégorie"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@id/label_categ"
+        app:layout_constraintTop_toBottomOf="@+id/value_id" />
+
 
     <TextView
         android:id="@+id/label_name"
@@ -39,18 +63,18 @@
         android:text="Nom"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_id" />
+        app:layout_constraintTop_toBottomOf="@+id/value_categ" />
 
     <TextView
         android:id="@+id/value_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:text="Valeur nom"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_name" />
+        app:layout_constraintStart_toEndOf="@id/label_name"
+        app:layout_constraintTop_toBottomOf="@+id/value_categ" />
 
     <TextView
         android:id="@+id/label_value"
@@ -67,35 +91,14 @@
         android:id="@+id/value_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:text="Valeur code"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_value" />
-
-    <TextView
-        android:id="@+id/label_categ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:text="Catégorie"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_value" />
+        app:layout_constraintStart_toEndOf="@id/label_value"
+        app:layout_constraintTop_toBottomOf="@+id/value_name" />
 
 
-    <TextView
-        android:id="@+id/value_categ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="30dp"
-        android:text="Valeur catégorie"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_categ" />
 
     <TextView
         android:id="@+id/textview_second"
@@ -117,6 +120,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.42"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_categ" />
+        app:layout_constraintTop_toBottomOf="@+id/value_value" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

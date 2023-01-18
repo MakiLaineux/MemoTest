@@ -83,22 +83,22 @@
             android:gravity="center_vertical"
             android:text="codename"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/codeVal"
+            app:layout_constraintEnd_toStartOf="@+id/codeUpdateDay"
             app:layout_constraintHorizontal_weight="8"
             app:layout_constraintStart_toEndOf="@id/categ"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/codeVal"
+            android:id="@+id/codeUpdateDay"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:singleLine="false"
-            android:text="codeval"
+            android:text="udate day"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintHorizontal_weight="4"
             app:layout_constraintStart_toEndOf="@id/codeName"
             app:layout_constraintTop_toTopOf="parent" />
 

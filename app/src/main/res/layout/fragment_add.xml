@@ -30,6 +30,30 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_id" />
+    <TextView
+        android:id="@+id/label_categ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Catégorie"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/value_id" />
+
+
+    <EditText
+        android:id="@+id/value_categ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:hint="Valeur catégorie"
+        android:inputType="text"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@id/label_categ"
+        app:layout_constraintTop_toBottomOf="@+id/value_id" />
+
 
     <TextView
         android:id="@+id/label_name"
@@ -40,18 +64,18 @@
         android:text="Nom"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_id" />
+        app:layout_constraintTop_toBottomOf="@+id/value_categ" />
 
     <EditText
         android:id="@+id/value_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
         android:hint="Valeur nom"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_name" />
+        app:layout_constraintStart_toEndOf="@id/label_name"
+        app:layout_constraintTop_toBottomOf="@+id/value_categ" />
 
     <TextView
         android:id="@+id/label_value"
@@ -72,31 +96,8 @@
         android:layout_marginTop="10dp"
         android:hint="Valeur code"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_value" />
-
-    <TextView
-        android:id="@+id/label_categ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Catégorie"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_value" />
-
-
-    <EditText
-        android:id="@+id/value_categ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="10dp"
-        android:hint="Valeur catégorie"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_categ" />
+        app:layout_constraintStart_toEndOf="@id/label_value"
+        app:layout_constraintTop_toBottomOf="@+id/value_name" />
 
 
     <TextView
@@ -119,5 +120,5 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_categ" />
+        app:layout_constraintTop_toBottomOf="@+id/value_value" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -59,7 +59,7 @@ public class CodeListAdapter extends RecyclerView.Adapter<CodeListAdapter.ViewHo
         holder.item_rvId.setText(String.valueOf(listPosition));
         holder.item_categ.setText(codeList.get(listPosition).getCodeCategory());
         holder.item_codeName.setText(codeList.get(listPosition).getCodeName());
-        holder.item_codeVal.setText(codeList.get(listPosition).getCodeValue());
+        holder.item_codeUpdateDay.setText(codeList.get(listPosition).getCodeUpdateDay());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +79,7 @@ public class CodeListAdapter extends RecyclerView.Adapter<CodeListAdapter.ViewHo
         TextView item_rvId;
         TextView item_categ;
         TextView item_codeName;
-        TextView item_codeVal;
+        TextView item_codeUpdateDay;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -87,7 +87,7 @@ public class CodeListAdapter extends RecyclerView.Adapter<CodeListAdapter.ViewHo
             item_rvId = itemView.findViewById(R.id.rvId);
             item_categ = itemView.findViewById(R.id.categ);
             item_codeName = itemView.findViewById(R.id.codeName);
-            item_codeVal = itemView.findViewById(R.id.codeVal);
+            item_codeUpdateDay = itemView.findViewById(R.id.codeUpdateDay);
         }
     }
 }

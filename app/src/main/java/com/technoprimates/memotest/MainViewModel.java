@@ -1,6 +1,7 @@
 package com.technoprimates.memotest;
 
 import android.app.Application;
+import android.text.format.DateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,11 +34,15 @@ public class MainViewModel extends AndroidViewModel {
     // Methods called by UI controllers
     public MutableLiveData<List<Code>> getSearchresults() {return searchresults;}
     public LiveData<List<Code>> getAllcodes() {return allcodes;}
-    public void insertCode(Code c) {repository.insertCode(c);}
     public void findCode(String name) {repository.findCode(name);}
     public void deleteCode(String name) {repository.deleteCode(name);}
     public void setCurrentCode(Code code) {currentCode = code;}
     public Code getCurrentCode() {return currentCode;}
+    public void insertCode(Code c) {
+        // before inserting, set the UodateDay value in format dd-MM-yyyy
+        c.setCodeUpdateDay(DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
+        repository.insertCode(c);
+    }
 
     // check that a Code matching the given name does not already exists in current code list
     @Nullable
