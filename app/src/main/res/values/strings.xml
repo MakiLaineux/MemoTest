@@ -21,4 +21,13 @@
     <string name="content_category">Valeur catégorie</string>
     <string name="content_codename">Valeur nom</string>
     <string name="content_codeval">Valeur code</string>
- </resources>
+
+    <string name="toast_lockscreen_not_enabled">Lockscreen security not enabled in Settings</string>
+    <string name="toast_fingerprint_permission_not_granted">Fingerprint permission not enabled</string>
+    <string name="toast_fingerprint_not_supported">Fingerprint not supported</string>
+    <string name="prompt_authentication_required">Authentication required</string>
+    <string name="prompt_code_protected_by_fingerprint">This code is protected by fingerprint authentication</string>
+    <string name="authentication_cancelled">Authentication cancelled</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="authentication_success">Successful authentication</string>
+</resources>

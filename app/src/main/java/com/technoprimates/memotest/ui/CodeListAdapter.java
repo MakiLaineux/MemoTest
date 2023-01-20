@@ -17,8 +17,16 @@ import java.util.List;
 
 public class CodeListAdapter extends RecyclerView.Adapter<CodeListAdapter.ViewHolder> {
 
+    /**
+     * Interface definition for a callback to be invoked when a Code object is clicked on a list
+     */
     public interface CodeActionListener {
-        void onViewCodeRequest(int pos);
+
+        /**
+         * Called when a Code has been clicked
+         * @param pos The position clicked
+         */
+        void onCodeClicked(int pos);
     }
 
     private final int codeItemLayout;
@@ -63,7 +71,7 @@ public class CodeListAdapter extends RecyclerView.Adapter<CodeListAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onViewCodeRequest(holder.getBindingAdapterPosition());
+                listener.onCodeClicked(holder.getBindingAdapterPosition());
             }
         });
     }

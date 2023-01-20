@@ -1,9 +1,14 @@
 package com.technoprimates.memotest.ui;
 
+import android.content.DialogInterface;
+import android.hardware.biometrics.BiometricPrompt;
+import android.hardware.biometrics.BiometricPrompt.AuthenticationCallback;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +33,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
     private MainViewModel mViewModel;
     private FragmentListBinding binding;
     private CodeListAdapter adapter;
+    private Code currentCode;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +43,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -96,10 +102,47 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
         itemTouchHelper.attachToRecyclerView(binding.codeRecycler);
     }
 
+    /**
+     * {@inheritDoc}
+     * This triggers immediately a navigation to the Visualization Fragment.
+     * If the Code is protected by fingerprint, a authentication is performed first.
+     */
     @Override
-    public void onViewCodeRequest(int pos) {
-        Code code = adapter.getCodeAtPos(pos);
-        mViewModel.setCurrentCode(code);
+    public void onCodeClicked(int pos) {
+        currentCode = adapter.getCodeAtPos(pos);
+        if (currentCode == null) return;
+
+        // check if the Code is fingerprint protected
+        if (currentCode.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED) {
+
+            // Code protected : Ask for the user's fingerprint
+            BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(getActivity())
+                    .setTitle(getString(R.string.app_name))
+                    .setSubtitle(getString(R.string.prompt_authentication_required))
+                    .setDescription((getString(R.string.prompt_code_protected_by_fingerprint)))
+                    .setNegativeButton("Cancel", requireActivity().getMainExecutor(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getActivity(), getString(R.string.authentication_cancelled), Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .build();
+
+            // launch authentication : if successfull, the callback will launch the navigation to the visu fragment
+            biometricPrompt.authenticate(getCancellationSignal(), requireActivity().getMainExecutor(), getAuthenticationCallback());
+
+        } else {
+            // No authentication required : navigate to visualization of currentCode
+            navigateToCodeVisu();
+        }
+    }
+
+
+    /**
+     * Navigate to the visualization fragment
+     */
+    private void navigateToCodeVisu() {
+        mViewModel.setCurrentCode(currentCode);
         NavHostFragment.findNavController(ListFragment.this)
                 .navigate(R.id.action_FirstFragment_to_SecondFragment);
     }
@@ -108,6 +151,8 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
         // delete selected Code
         Code code = adapter.getCodeAtPos(pos);
+        if (code == null) return;
+
         mViewModel.deleteCode(code.getCodeName());
 
         // show snackbar with undo button
@@ -120,5 +165,56 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
         });
         snackbar.show();
     }
+
+    /**
+     * Defines the methods to handle the authentication events
+     */
+    private AuthenticationCallback getAuthenticationCallback() {
+        return new AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, CharSequence errString) {
+                Toast.makeText(getActivity(), getString(R.string.authentication_failed), Toast.LENGTH_LONG).show();
+                super.onAuthenticationError(errorCode, errString);
+            }
+
+            @Override
+            public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+                super.onAuthenticationHelp(helpCode, helpString);
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                Toast.makeText(getActivity(), getString(R.string.authentication_success), Toast.LENGTH_LONG).show();
+                super.onAuthenticationSucceeded(result);
+                navigateToCodeVisu();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                Toast.makeText(getActivity(), getString(R.string.authentication_failed), Toast.LENGTH_LONG).show();
+                super.onAuthenticationFailed();
+            }
+        };
+    }
+
+    /**
+     * Defines the CancellationSignal object
+     * Call cancel() on this object to cancel the authentication attempt
+     */
+    private CancellationSignal getCancellationSignal() {
+        CancellationSignal cancellationSignal = new CancellationSignal();
+        cancellationSignal.setOnCancelListener(new CancellationSignal.OnCancelListener() {
+            /**
+             * Callback launched after cancellation
+             */
+            @Override
+            public void onCancel() {
+                Snackbar snackbar = Snackbar.make(binding.codeRecycler, "Canceled via signal", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        });
+        return cancellationSignal;
+    }
+
 
 }
