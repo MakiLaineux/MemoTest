@@ -7,119 +7,140 @@
     tools:context=".ui.VisuFragment">
 
     <TextView
-        android:id="@+id/label_id"
+        android:id="@+id/txt_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="60dp"
-        android:text="Id"
+        android:text="@string/txt_id"
         android:textSize="16sp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/value_id"
+        android:id="@+id/content_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="60dp"
-        android:text="valeur Id"
+        android:text="@string/content_id"
         android:textSize="24sp"
         android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@+id/label_id"
+        app:layout_constraintStart_toEndOf="@+id/txt_id"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/label_categ"
+        android:id="@+id/txt_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
-        android:text="Catégorie"
+        android:text="@string/txt_category"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_id" />
+        app:layout_constraintTop_toBottomOf="@+id/content_id" />
 
 
     <TextView
-        android:id="@+id/value_categ"
+        android:id="@+id/content_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
-        android:text="Valeur catégorie"
+        android:text="@string/content_category"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@id/label_categ"
-        app:layout_constraintTop_toBottomOf="@+id/value_id" />
+        app:layout_constraintStart_toEndOf="@id/txt_category"
+        app:layout_constraintTop_toBottomOf="@+id/content_id" />
 
 
     <TextView
-        android:id="@+id/label_name"
+        android:id="@+id/txt_codename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
-        android:text="Nom"
+        android:text="@string/txt_codename"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_categ" />
+        app:layout_constraintTop_toBottomOf="@+id/content_category" />
 
     <TextView
-        android:id="@+id/value_name"
+        android:id="@+id/content_codename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
-        android:text="Valeur nom"
+        android:text="@string/content_codename"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@id/label_name"
-        app:layout_constraintTop_toBottomOf="@+id/value_categ" />
+        app:layout_constraintStart_toEndOf="@id/txt_codename"
+        app:layout_constraintTop_toBottomOf="@+id/content_category" />
 
     <TextView
-        android:id="@+id/label_value"
+        android:id="@+id/txt_codeval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
-        android:text="Code"
+        android:text="@string/txt_codeval"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_name" />
+        app:layout_constraintTop_toBottomOf="@+id/content_codename" />
 
     <TextView
-        android:id="@+id/value_value"
+        android:id="@+id/content_codeval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
-        android:text="Valeur code"
+        android:text="@string/txt_codeval"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@id/label_value"
-        app:layout_constraintTop_toBottomOf="@+id/value_name" />
+        app:layout_constraintStart_toEndOf="@id/txt_codeval"
+        app:layout_constraintTop_toBottomOf="@+id/content_codename" />
 
+    <TextView
+        android:id="@+id/txt_checkbox_fingerprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/txt_checkbox_fingerprint"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_codeval" />
 
+    <CheckBox
+        android:id="@+id/checkbox_fingerprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+
+        android:clickable="false"
+        app:layout_constraintStart_toEndOf="@id/txt_checkbox_fingerprint"
+        app:layout_constraintTop_toBottomOf="@+id/content_codeval" />
+
+    <Button
+        android:id="@+id/button_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_button_edit"
+        app:layout_constraintBottom_toTopOf="@+id/textview_second"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_fingerprint" />
 
     <TextView
         android:id="@+id/textview_second"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Ligne pour les messages"
+        android:text="@string/txt_message_visu"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button_second"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/retour"
-        app:layout_constraintBottom_toTopOf="@+id/textview_second"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.42"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_value" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

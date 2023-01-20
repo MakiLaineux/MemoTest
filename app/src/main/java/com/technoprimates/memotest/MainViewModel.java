@@ -21,7 +21,6 @@ public class MainViewModel extends AndroidViewModel {
     private LiveData<List<Code>> allcodes;  // used by RV
     private MutableLiveData<List<Code>> searchresults;
     private Code currentCode; // Code currently selected or displayed
-//    private List<Code> currentCodeList;
 
     public MainViewModel(Application application) {
         super(application);
@@ -38,13 +37,21 @@ public class MainViewModel extends AndroidViewModel {
     public void deleteCode(String name) {repository.deleteCode(name);}
     public void setCurrentCode(Code code) {currentCode = code;}
     public Code getCurrentCode() {return currentCode;}
+
     public void insertCode(Code c) {
-        // before inserting, set the UodateDay value in format dd-MM-yyyy
+        // before inserting, set the UpdateDay value in format dd-MM-yyyy
         c.setCodeUpdateDay(DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
         repository.insertCode(c);
     }
 
+    public void updateCode(Code c) {
+        // before updating, set the UpdateDay value in format dd-MM-yyyy
+        c.setCodeUpdateDay(DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
+        repository.updateCode(c);
+    }
+
     // check that a Code matching the given name does not already exists in current code list
+    // returns true if the name is NOT in the list
     @Nullable
     public boolean checkCodeName(@NonNull String name) {
         List<Code> currentCodeList;

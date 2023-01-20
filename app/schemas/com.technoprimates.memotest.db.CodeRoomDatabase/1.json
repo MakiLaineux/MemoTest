@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "31031deee29d8ed281719e62471075e7",
+    "identityHash": "5eb3f92e49f9ffa77c91fba9a15cffd2",
     "entities": [
       {
         "tableName": "codes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `cName` TEXT, `codeValue` TEXT, `codeCategory` TEXT, `codeUpdateDay` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `cName` TEXT, `cValue` TEXT, `cCategory` TEXT, `cUpdateDay` TEXT, `cProtectMode` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "codeId",
@@ -22,21 +22,27 @@
           },
           {
             "fieldPath": "codeValue",
-            "columnName": "codeValue",
+            "columnName": "cValue",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "codeCategory",
-            "columnName": "codeCategory",
+            "columnName": "cCategory",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "codeUpdateDay",
-            "columnName": "codeUpdateDay",
+            "columnName": "cUpdateDay",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "codeProtectMode",
+            "columnName": "cProtectMode",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -52,7 +58,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '31031deee29d8ed281719e62471075e7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5eb3f92e49f9ffa77c91fba9a15cffd2')"
     ]
   }
 }

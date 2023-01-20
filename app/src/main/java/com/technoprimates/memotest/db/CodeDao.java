@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -21,4 +22,7 @@ public interface CodeDao {
 
     @Query("DELETE FROM codes WHERE cName = :name")
     void deleteCode(String name);
+
+    @Update
+    void updateCode(Code code);
 }

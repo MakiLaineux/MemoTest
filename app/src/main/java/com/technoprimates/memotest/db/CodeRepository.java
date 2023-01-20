@@ -68,6 +68,15 @@ public class CodeRepository {
         executor.shutdown();
     }
 
+    public void updateCode(@NonNull Code code) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+            codeDao.updateCode(code);
+            handler.sendEmptyMessage(0);
+        });
+        executor.shutdown();
+    }
+
     // get reference to LiveData object
     public LiveData<List<Code>> getAllCodes() {
         return allCodes;

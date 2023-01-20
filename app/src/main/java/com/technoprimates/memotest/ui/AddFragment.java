@@ -38,7 +38,7 @@ public class AddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonThird.setOnClickListener(new View.OnClickListener() {
+        binding.buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 validate();
@@ -48,9 +48,10 @@ public class AddFragment extends Fragment {
 
     public void validate() {
 
-        String name = binding.valueName.getText().toString();
-        String value = binding.valueValue.getText().toString();
-        String categ = binding.valueCateg.getText().toString();
+        String name = binding.contentCodename.getText().toString();
+        String value = binding.contentCodeval.getText().toString();
+        String categ = binding.contentCategory.getText().toString();
+        int protectMode = binding.checkboxFingerprint.isChecked() ? Code.FINGERPRINT_PROTECTED : Code.NOT_FINGERPRINT_PROTECTED;
 
         // check name, value and categ
         if (name.equals("")) {
@@ -72,7 +73,7 @@ public class AddFragment extends Fragment {
             return;
         }
 
-        Code code = new Code(name, value, categ);
+        Code code = new Code(name, value, categ, protectMode);
         mViewModel.insertCode(code);
         NavHostFragment.findNavController(AddFragment.this).navigate(R.id.action_ThirdFragment_to_FirstFragment);
     }

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.technoprimates.memotest.ui.ListFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/label_fragment_list"
         tools:layout="@layout/fragment_list">
 
         <action
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.technoprimates.memotest.ui.VisuFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/label_fragment_visu"
         tools:layout="@layout/fragment_visu">
 
         <action
@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/ThirdFragment"
         android:name="com.technoprimates.memotest.ui.AddFragment"
-        android:label="@string/third_fragment_label"
+        android:label="@string/label_fragment_add"
         tools:layout="@layout/fragment_add">
 
         <action

@@ -34,12 +34,13 @@ public class VisuFragment extends Fragment {
         mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         Code code = mViewModel.getCurrentCode();
-        binding.valueId.setText(String.valueOf(code.getCodeId()));
-        binding.valueCateg.setText(code.getCodeCategory());
-        binding.valueName.setText(code.getCodeName());
-        binding.valueValue.setText(code.getCodeValue());
+        binding.contentId.setText(String.valueOf(code.getCodeId()));
+        binding.contentCategory.setText(code.getCodeCategory());
+        binding.contentCodename.setText(code.getCodeName());
+        binding.contentCodeval.setText(code.getCodeValue());
+        binding.checkboxFingerprint.setChecked(code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED ? true : false);
 
-        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
+        binding.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(VisuFragment.this)

@@ -1,14 +1,24 @@
 <resources>
     <string name="app_name">MemoTest</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">Mes codes</string>
-    <string name="second_fragment_label">Détails</string>
-    <string name="third_fragment_label">Ajout de code</string>
-    <string name="visu">Visu details</string>
 
-    <string name="text_first_fragment">Liste</string>
-    <string name="text_third_fragment">Ajout code</string>
-    <string name="text_second_fragment">Visu code</string>
-    <string name="retour">retour liste</string>
-</resources>
+    <!-- Strings used for fragments for navigation -->
+    <string name="label_fragment_list">Mes codes</string>
+    <string name="label_fragment_visu">Détails</string>
+    <string name="label_fragment_add">Ajout de code</string>
+
+    <string name="txt_button_edit">retour liste</string>
+    <string name="txt_button_add">Ajouter</string>
+    <string name="txt_message_add">Ligne pour les messages</string>
+    <string name="txt_message_visu">Ligne pour les messages</string>
+
+    <string name="txt_id">Id</string>
+    <string name="txt_category">Catégorie</string>
+    <string name="txt_codename">Nom</string>
+    <string name="txt_codeval">Code</string>
+    <string name="txt_checkbox_fingerprint">Protected by fingerprint</string>
+    <string name="content_id">valeur Id</string>
+    <string name="content_category">Valeur catégorie</string>
+    <string name="content_codename">Valeur nom</string>
+    <string name="content_codeval">Valeur code</string>
+ </resources>
