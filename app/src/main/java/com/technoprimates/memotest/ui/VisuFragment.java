@@ -1,6 +1,5 @@
 package com.technoprimates.memotest.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.technoprimates.memotest.MainViewModel;
-import com.technoprimates.memotest.R;
 import com.technoprimates.memotest.databinding.CodeViewBinding;
 import com.technoprimates.memotest.db.Code;
 
@@ -37,31 +34,22 @@ public class VisuFragment extends Fragment {
             return;
 
         // fill fields and make them inactive
-        binding.contentId.getEditText().setText(String.valueOf(code.getCodeId()));
+        if (binding.contentId.getEditText() != null) binding.contentId.getEditText().setText(String.valueOf(code.getCodeId()));
         binding.contentId.setEnabled(false);
 
-        binding.contentCategory.getEditText().setText(code.getCodeCategory());
+        if (binding.contentCategory.getEditText() != null) binding.contentCategory.getEditText().setText(code.getCodeCategory());
         binding.contentCategory.setEnabled(false);
 
-        binding.contentCodename.getEditText().setText(code.getCodeName());
+        if (binding.contentCodename.getEditText() != null) binding.contentCodename.getEditText().setText(code.getCodeName());
         binding.contentCodename.setEnabled(false);
 
-        binding.contentCodeval.getEditText().setText(code.getCodeValue());
+        if (binding.contentCodeval.getEditText() != null) binding.contentCodeval.getEditText().setText(code.getCodeValue());
         binding.contentCodeval.setEnabled(false);
 
-        binding.checkboxFingerprint.setChecked(code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED ? true : false);
+        binding.checkboxFingerprint.setChecked(code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED);
         binding.checkboxFingerprint.setEnabled(false);
 
         // TODO : modify button
-        /*
-        binding.buttonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(VisuFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
-            }
-        });
-        */
     }
 
     @Override

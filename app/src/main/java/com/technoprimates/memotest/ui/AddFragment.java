@@ -43,48 +43,39 @@ public class AddFragment extends Fragment {
 
         // set dropdown list for categories
         String[] categs = getResources().getStringArray(R.array.categs);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.categ_dropdown_item, categs);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.categ_dropdown_item, categs);
         binding.autoCompleteTextView.setAdapter(arrayAdapter);
 
         // listeners, triggered when losing the focus, for clearing a previous "empty field" error message
-        binding.inputCodename.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    // lost the focus, there may be an error msg to clear
-                    if (binding.contentCodename.getError() != null) {
-                        // there is currently an error msg, check if it is to be cleared
-                        if (!TextUtils.isEmpty(binding.contentCodename.getEditText().getText().toString())) {
-                            // Code name not empty, the error message can be cleared
-                            binding.contentCodename.setError(null);
-                        };
+        binding.inputCodename.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                // lost the focus, there may be an error msg to clear
+                if (binding.contentCodename.getError() != null) {
+                    // there is currently an error msg, check if it is to be cleared
+                    if ((binding.contentCodename.getEditText() != null)
+                            && (!TextUtils.isEmpty(binding.contentCodename.getEditText().getText().toString()))) {
+                        // Code name not empty, the error message can be cleared
+                        binding.contentCodename.setError(null);
                     }
                 }
             }
         });
-        binding.inputCodeval.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    // lost the focus, there may be an error msg to clear
-                    if (binding.contentCodeval.getError() != null) {
-                        // there is currently an error msg, check if it is to be cleared
-                        if (!TextUtils.isEmpty(binding.contentCodeval.getEditText().getText().toString())) {
-                            // Code name not empty, the error message can be cleared
-                            binding.contentCodeval.setError(null);
-                        };
+        binding.inputCodeval.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                // lost the focus, there may be an error msg to clear
+                if (binding.contentCodeval.getError() != null) {
+                    // there is currently an error msg, check if it is to be cleared
+                    if ((binding.contentCodeval.getEditText() != null)
+                        && (!TextUtils.isEmpty(binding.contentCodeval.getEditText().getText().toString()))) {
+                        // Code name not empty, the error message can be cleared
+                        binding.contentCodeval.setError(null);
                     }
                 }
             }
         });
 
         // listener for the validation button
-        binding.buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                validate();
-            }
-        });
+        binding.buttonAdd.setOnClickListener(v -> validate());
     }
 
     public void validate() {
