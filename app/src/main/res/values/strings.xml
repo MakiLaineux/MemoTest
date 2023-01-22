@@ -30,4 +30,5 @@
     <string name="authentication_cancelled">Authentication cancelled</string>
     <string name="authentication_failed">Authentication failed</string>
     <string name="authentication_success">Successful authentication</string>
+    <string name="txt_id_code">Numéro du code</string>
 </resources>

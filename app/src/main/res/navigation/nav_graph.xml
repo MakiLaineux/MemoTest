@@ -23,7 +23,7 @@
         android:id="@+id/SecondFragment"
         android:name="com.technoprimates.memotest.ui.VisuFragment"
         android:label="@string/label_fragment_visu"
-        tools:layout="@layout/fragment_visu">
+        tools:layout="@layout/code_view">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
@@ -34,7 +34,7 @@
         android:id="@+id/ThirdFragment"
         android:name="com.technoprimates.memotest.ui.AddFragment"
         android:label="@string/label_fragment_add"
-        tools:layout="@layout/fragment_add">
+        tools:layout="@layout/code_view">
 
         <action
             android:id="@+id/action_ThirdFragment_to_FirstFragment"

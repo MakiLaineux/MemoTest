@@ -2,9 +2,11 @@ package com.technoprimates.memotest.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,19 +15,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.technoprimates.memotest.MainViewModel;
 import com.technoprimates.memotest.R;
-import com.technoprimates.memotest.databinding.FragmentAddBinding;
+import com.technoprimates.memotest.databinding.CodeViewBinding;
 import com.technoprimates.memotest.db.Code;
 
 public class AddFragment extends Fragment {
 
-    private FragmentAddBinding binding;
+    private CodeViewBinding binding;
     private MainViewModel mViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentAddBinding.inflate(inflater, container, false);
+        binding = CodeViewBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -38,6 +41,42 @@ public class AddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // start with focus on first input
+        binding.contentCodename.requestFocus();
+
+        // listeners for clearing a previous "empty field" error message, triggered when losing the focus
+        binding.inputCodename.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    // lost the focus, there may be an error msg to clear
+                    if (binding.contentCodename.getError() != null) {
+                        // there is currently an error msg, check if it is to be cleared
+                        if (!TextUtils.isEmpty(binding.contentCodename.getEditText().getText().toString())) {
+                            // Code name not empty, the error message can be cleared
+                            binding.contentCodename.setError(null);
+                        };
+                    }
+                }
+            }
+        });
+        binding.inputCodeval.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    // lost the focus, there may be an error msg to clear
+                    if (binding.contentCodeval.getError() != null) {
+                        // there is currently an error msg, check if it is to be cleared
+                        if (!TextUtils.isEmpty(binding.contentCodeval.getEditText().getText().toString())) {
+                            // Code name not empty, the error message can be cleared
+                            binding.contentCodeval.setError(null);
+                        };
+                    }
+                }
+            }
+        });
+
+        // listener for the validation button
         binding.buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,30 +86,37 @@ public class AddFragment extends Fragment {
     }
 
     public void validate() {
-
-        String name = binding.contentCodename.getText().toString();
-        String value = binding.contentCodeval.getText().toString();
-        String categ = binding.contentCategory.getText().toString();
+        String name = binding.contentCodename.getEditText().getText().toString();
+        String value = binding.contentCodeval.getEditText().getText().toString();
+        String categ = binding.contentCategory.getEditText().getText().toString();
         int protectMode = binding.checkboxFingerprint.isChecked() ? Code.FINGERPRINT_PROTECTED : Code.NOT_FINGERPRINT_PROTECTED;
 
         // check name, value and categ
         if (name.equals("")) {
-            binding.textviewThird.setText("No Name value");
+            binding.contentCodename.setError("No Name value");
+            binding.contentCodename.requestFocus();
             return;
+        } else {
+            binding.contentCodename.setError(null);
+            binding.contentCodename.setHelperTextEnabled(false);
         }
+
         if (value.equals("")) {
-            binding.textviewThird.setText("No Value value");
+            binding.contentCodeval.setError("No code value");
+            binding.contentCodeval.requestFocus();
             return;
-        }
-        if (categ.equals("")) {
-            binding.textviewThird.setText("No categ value");
-            return;
+        } else {
+            binding.contentCodeval.setError(null);
+            binding.contentCodeval.setHelperTextEnabled(false);
         }
 
         // check new name not already in viewmodel
         if (!mViewModel.checkCodeName(name)) {
-            binding.textviewThird.setText("Name already exists");
+            binding.contentCodename.setError("Name already exists");
+            binding.contentCodename.requestFocus();
             return;
+        } else {
+            binding.contentCodename.setError(null);
         }
 
         Code code = new Code(name, value, categ, protectMode);

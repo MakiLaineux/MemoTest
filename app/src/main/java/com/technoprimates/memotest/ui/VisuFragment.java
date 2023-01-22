@@ -11,21 +11,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.technoprimates.memotest.MainViewModel;
 import com.technoprimates.memotest.R;
-import com.technoprimates.memotest.databinding.FragmentVisuBinding;
+import com.technoprimates.memotest.databinding.CodeViewBinding;
 import com.technoprimates.memotest.db.Code;
 
 
 public class VisuFragment extends Fragment {
 
-    private FragmentVisuBinding binding;
+    private CodeViewBinding binding;
     private MainViewModel mViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentVisuBinding.inflate(inflater, container, false);
+        binding = CodeViewBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -34,12 +33,26 @@ public class VisuFragment extends Fragment {
         mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         Code code = mViewModel.getCurrentCode();
-        binding.contentId.setText(String.valueOf(code.getCodeId()));
-        binding.contentCategory.setText(code.getCodeCategory());
-        binding.contentCodename.setText(code.getCodeName());
-        binding.contentCodeval.setText(code.getCodeValue());
-        binding.checkboxFingerprint.setChecked(code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED ? true : false);
+        if (code == null)
+            return;
 
+        // fill fields and make them inactive
+        binding.contentId.getEditText().setText(String.valueOf(code.getCodeId()));
+        binding.contentId.setEnabled(false);
+
+        binding.contentCategory.getEditText().setText(code.getCodeCategory());
+        binding.contentCategory.setEnabled(false);
+
+        binding.contentCodename.getEditText().setText(code.getCodeName());
+        binding.contentCodename.setEnabled(false);
+
+        binding.contentCodeval.getEditText().setText(code.getCodeValue());
+        binding.contentCodeval.setEnabled(false);
+
+        binding.checkboxFingerprint.setChecked(code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED ? true : false);
+        binding.checkboxFingerprint.setEnabled(false);
+
+        /*
         binding.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,6 +60,7 @@ public class VisuFragment extends Fragment {
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
             }
         });
+        */
     }
 
     @Override
