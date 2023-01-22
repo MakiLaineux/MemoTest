@@ -1,12 +1,11 @@
 package com.technoprimates.memotest.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,8 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.technoprimates.memotest.MainViewModel;
 import com.technoprimates.memotest.R;
 import com.technoprimates.memotest.databinding.CodeViewBinding;
@@ -44,7 +41,12 @@ public class AddFragment extends Fragment {
         // start with focus on first input
         binding.contentCodename.requestFocus();
 
-        // listeners for clearing a previous "empty field" error message, triggered when losing the focus
+        // set dropdown list for categories
+        String[] categs = getResources().getStringArray(R.array.categs);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.categ_dropdown_item, categs);
+        binding.autoCompleteTextView.setAdapter(arrayAdapter);
+
+        // listeners, triggered when losing the focus, for clearing a previous "empty field" error message
         binding.inputCodename.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {

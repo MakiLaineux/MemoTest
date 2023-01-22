@@ -52,6 +52,7 @@ public class VisuFragment extends Fragment {
         binding.checkboxFingerprint.setChecked(code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED ? true : false);
         binding.checkboxFingerprint.setEnabled(false);
 
+        // TODO : modify button
         /*
         binding.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override

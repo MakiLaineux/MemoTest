@@ -31,4 +31,11 @@
     <string name="authentication_failed">Authentication failed</string>
     <string name="authentication_success">Successful authentication</string>
     <string name="txt_id_code">Numéro du code</string>
+    <string-array name="categs">
+        <item>CB</item>
+        <item>Banque</item>
+        <item>Home</item>
+        <item>PIN</item>
+        <item>Divers</item>
+    </string-array>
 </resources>

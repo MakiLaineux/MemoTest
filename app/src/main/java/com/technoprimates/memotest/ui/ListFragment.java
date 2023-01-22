@@ -36,13 +36,6 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
     private Code currentCode;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListBinding.inflate(inflater, container, false);
         return binding.getRoot();
