@@ -3,41 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/ListFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/ListFragment"
         android:name="com.technoprimates.memotest.ui.ListFragment"
-        android:label="@string/label_fragment_list"
+        android:label="@string/title_list"
         tools:layout="@layout/fragment_list">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment"/>
+            android:id="@+id/action_ListFragment_to_VisuFragment"
+            app:destination="@id/VisuFragment"/>
         <action
-            android:id="@+id/action_FirstFragment_to_ThirdFragment"
-            app:destination="@id/ThirdFragment" />
+            android:id="@+id/action_ListFragment_to_EditFragment"
+            app:destination="@id/EditFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/VisuFragment"
         android:name="com.technoprimates.memotest.ui.VisuFragment"
-        android:label="@string/label_fragment_visu"
+        android:label="@string/title_view"
         tools:layout="@layout/code_view">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_VisuFragment_to_EditFragment"
+            app:destination="@id/EditFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/ThirdFragment"
-        android:name="com.technoprimates.memotest.ui.AddFragment"
-        android:label="@string/label_fragment_add"
-        tools:layout="@layout/code_view">
+        android:id="@+id/EditFragment"
+        android:name="com.technoprimates.memotest.ui.EditFragment"
+        tools:layout="@layout/code_edit">
 
-        <action
-            android:id="@+id/action_ThirdFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+    <action
+        android:id="@+id/action_EditFragment_to_ListFragment"
+        app:destination="@id/ListFragment" />
     </fragment>
+
 </navigation>

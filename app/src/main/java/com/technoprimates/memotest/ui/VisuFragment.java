@@ -1,55 +1,85 @@
 package com.technoprimates.memotest.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.technoprimates.memotest.MainViewModel;
+import com.technoprimates.memotest.R;
 import com.technoprimates.memotest.databinding.CodeViewBinding;
 import com.technoprimates.memotest.db.Code;
 
 
 public class VisuFragment extends Fragment {
 
+    public static final String TAG = "VISUFRAG";
     private CodeViewBinding binding;
     private MainViewModel mViewModel;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // add fragment-specific menu using MenuProvider
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.menu_visu, menu);
+
+                // Add option Menu Here
+
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.action_edit) {
+                    // Navigate to EditFragment
+                    NavHostFragment.findNavController(VisuFragment.this)
+                            .navigate(R.id.action_VisuFragment_to_EditFragment);
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // binding
         binding = CodeViewBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         Code code = mViewModel.getCurrentCode();
-        if (code == null)
+        if (code == null) {
+            Log.e(TAG, "Error : no CurrentCode");
             return;
+        }
 
-        // fill fields and make them inactive
-        if (binding.contentId.getEditText() != null) binding.contentId.getEditText().setText(String.valueOf(code.getCodeId()));
-        binding.contentId.setEnabled(false);
-
-        if (binding.contentCategory.getEditText() != null) binding.contentCategory.getEditText().setText(code.getCodeCategory());
-        binding.contentCategory.setEnabled(false);
-
-        if (binding.contentCodename.getEditText() != null) binding.contentCodename.getEditText().setText(code.getCodeName());
-        binding.contentCodename.setEnabled(false);
-
-        if (binding.contentCodeval.getEditText() != null) binding.contentCodeval.getEditText().setText(code.getCodeValue());
-        binding.contentCodeval.setEnabled(false);
-
+        // fill fields
+        binding.dispCateg.setText(code.getCodeCategory());
+        binding.dispCodename.setText(code.getCodeName());
+        binding.dispCodeval.setText(code.getCodeValue());
         binding.checkboxFingerprint.setChecked(code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED);
-        binding.checkboxFingerprint.setEnabled(false);
-
-        // TODO : modify button
     }
 
     @Override
@@ -57,5 +87,4 @@ public class VisuFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }

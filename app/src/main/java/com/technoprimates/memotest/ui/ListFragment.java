@@ -46,11 +46,15 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
         mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         binding.fab.setOnClickListener(new View.OnClickListener() {
-            // must be from first fragment, otherwise fab is invisible TODO check
+            // Floating action button : add a new code
             @Override
             public void onClick(View view) {
+                // set CurrentCode of the ViewModel to null
+                mViewModel.setCurrentCode(null);
+
+                // navigate to editFragment
                 NavHostFragment.findNavController(ListFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_ThirdFragment);
+                        .navigate(R.id.action_ListFragment_to_EditFragment);
             }
         });
         observerSetup();
@@ -116,7 +120,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
                     .setNegativeButton("Cancel", requireActivity().getMainExecutor(), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), getString(R.string.authentication_cancelled), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), getString(R.string.toast_authentication_cancelled), Toast.LENGTH_LONG).show();
                         }
                     })
                     .build();
@@ -137,7 +141,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
     private void navigateToCodeVisu() {
         mViewModel.setCurrentCode(currentCode);
         NavHostFragment.findNavController(ListFragment.this)
-                .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                .navigate(R.id.action_ListFragment_to_VisuFragment);
     }
 
     public void onDeleteCodeRequest(int pos) {
@@ -166,7 +170,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
         return new AuthenticationCallback() {
             @Override
             public void onAuthenticationError(int errorCode, CharSequence errString) {
-                Toast.makeText(getActivity(), getString(R.string.authentication_failed), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.toast_authentication_failed), Toast.LENGTH_LONG).show();
                 super.onAuthenticationError(errorCode, errString);
             }
 
@@ -177,14 +181,14 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
             @Override
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
-                Toast.makeText(getActivity(), getString(R.string.authentication_success), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.toast_authentication_success), Toast.LENGTH_LONG).show();
                 super.onAuthenticationSucceeded(result);
                 navigateToCodeVisu();
             }
 
             @Override
             public void onAuthenticationFailed() {
-                Toast.makeText(getActivity(), getString(R.string.authentication_failed), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.toast_authentication_failed), Toast.LENGTH_LONG).show();
                 super.onAuthenticationFailed();
             }
         };
