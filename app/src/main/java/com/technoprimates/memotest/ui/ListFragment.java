@@ -6,13 +6,18 @@ import android.hardware.biometrics.BiometricPrompt.AuthenticationCallback;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -37,6 +42,32 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // add fragment-specific menu using MenuProvider
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.menu_list, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.action_settings) {
+                    Toast.makeText(getActivity(), getString(R.string.toast_menu_settings), Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                if (menuItem.getItemId() == R.id.action_help) {
+                    Toast.makeText(getActivity(), getString(R.string.toast_menu_help), Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                if (menuItem.getItemId() == R.id.action_about) {
+                    Toast.makeText(getActivity(), getString(R.string.toast_menu_about), Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
         binding = FragmentListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -45,17 +76,14 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
         super.onViewCreated(view, savedInstanceState);
 
         mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            // Floating action button : add a new code
-            @Override
-            public void onClick(View view) {
-                // set CurrentCode of the ViewModel to null
-                mViewModel.setCurrentCode(null);
+        // Floating action button : add a new code
+        binding.fab.setOnClickListener(view1 -> {
+            // set CurrentCode of the ViewModel to null
+            mViewModel.setCurrentCode(null);
 
-                // navigate to editFragment
-                NavHostFragment.findNavController(ListFragment.this)
-                        .navigate(R.id.action_ListFragment_to_EditFragment);
-            }
+            // navigate to editFragment
+            NavHostFragment.findNavController(ListFragment.this)
+                    .navigate(R.id.action_ListFragment_to_EditFragment);
         });
         observerSetup();
         recyclerSetup();
@@ -69,11 +97,8 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
     private void observerSetup() {
         mViewModel.getAllcodes().observe(getViewLifecycleOwner(),
-                new Observer<List<Code>>() {
-                    @Override
-                    public void onChanged(@Nullable final List<Code> codes) {
-                        adapter.setCodeList(codes); // update RV
-                    }
+                codes -> {
+                    adapter.setCodeList(codes); // update RV
                 });
     }
 
@@ -117,12 +142,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
                     .setTitle(getString(R.string.app_name))
                     .setSubtitle(getString(R.string.prompt_authentication_required))
                     .setDescription((getString(R.string.prompt_code_protected_by_fingerprint)))
-                    .setNegativeButton("Cancel", requireActivity().getMainExecutor(), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), getString(R.string.toast_authentication_cancelled), Toast.LENGTH_LONG).show();
-                        }
-                    })
+                    .setNegativeButton(getString(R.string.prompt_cancel), requireActivity().getMainExecutor(), (dialog, which) -> Toast.makeText(getActivity(), getString(R.string.toast_authentication_cancelled), Toast.LENGTH_LONG).show())
                     .build();
 
             // launch authentication : if successfull, the callback will launch the navigation to the visu fragment
@@ -154,12 +174,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
         // show snackbar with undo button
         Snackbar snackbar = Snackbar.make(binding.codeRecycler, "Code deleted at pos : "+pos, Snackbar.LENGTH_LONG);
-        snackbar.setAction("UNDO", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mViewModel.insertCode(code);
-            }
-        });
+        snackbar.setAction("UNDO", view -> mViewModel.insertCode(code));
         snackbar.show();
     }
 

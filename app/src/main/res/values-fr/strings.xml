@@ -6,6 +6,8 @@
     <string name="menu_settings">Options</string>
     <string name="menu_save">Enregistrer</string>
     <string name="menu_update">Modifier</string>
+    <string name="menu_help">Aide</string>
+    <string name="menu_about">A propos</string>
 
     <!-- Strings used for fragment titles -->
     <string name="title_list">Mes codes</string>
@@ -20,9 +22,12 @@
     <string name="toast_authentication_cancelled">Authentification annulée</string>
     <string name="toast_authentication_failed">Echec de l\'authentification</string>
     <string name="toast_authentication_success">Authentification réussie</string>
+    <string name="toast_menu_settings">Options : Y en a pas</string>
+    <string name="toast_menu_help">Aide : Y en a pas</string>
+    <string name="toast_menu_about">Johannes Carbonus fecit MMXXIII</string>
 
     <!-- Authentication prompts -->
-    <string name="prompt_authentication_required">Authentification nécessairerequired</string>
+    <string name="prompt_authentication_required">Authentification nécessaire</string>
     <string name="prompt_code_protected_by_fingerprint">Ce code est protégé par empreinte digitale</string>
 
     <!-- TextInputLayout hints -->
@@ -38,6 +43,16 @@
     <string name="err_noname">Entrez un nom pour le code</string>
     <string name="err_nocodeval">Entrez un code</string>
     <string name="err_name_already_exists">Un code de même nom existe déjà</string>
+    <string name="prompt_cancel">Cancel</string>
+
+
+    <string name="dbid">dbId</string>
+    <string name="rvid">rvId</string>
+    <string name="dbidtxtt">dbId</string>
+    <string name="rvidtxt">rvId</string>
+    <string name="category">category</string>
+    <string name="codename">codename</string>
+    <string name="udate_day">udate day</string>
 
     <!-- Category items -->
     <string-array name="categs">

@@ -4,11 +4,9 @@ import android.app.Application;
 import android.text.format.DateFormat;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.technoprimates.memotest.db.Code;
 import com.technoprimates.memotest.db.CodeRepository;
@@ -17,10 +15,12 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
-    private CodeRepository repository;
-    private LiveData<List<Code>> allcodes;  // used by RV
-    private MutableLiveData<List<Code>> searchresults;
-    private Code currentCode; // Code currently selected or displayed
+    private final CodeRepository repository;
+    private final LiveData<List<Code>> allcodes;  // used by RV
+    private final MutableLiveData<List<Code>> searchresults;
+
+    // Code currently selected or displayed
+    private Code currentCode;
 
     public MainViewModel(Application application) {
         super(application);
@@ -33,57 +33,39 @@ public class MainViewModel extends AndroidViewModel {
     // Methods called by UI controllers
     public MutableLiveData<List<Code>> getSearchresults() {return searchresults;}
     public LiveData<List<Code>> getAllcodes() {return allcodes;}
-    public void findCode(String name) {repository.findCode(name);}
     public void deleteCode(String name) {repository.deleteCode(name);}
     public void setCurrentCode(Code code) {currentCode = code;}
     public Code getCurrentCode() {return currentCode;}
 
+
+    public void updateCode(Code code) {
+        // currentCode has the dbId to update, fill the other fields with user inputs
+        currentCode.copyUIFields(code);
+        // before updating, set the UpdateDay value in format dd-MM-yyyy
+        currentCode.setCodeUpdateDay(DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
+        repository.updateCode(currentCode);
+    }
+
     public void insertCode(Code c) {
+        currentCode = c;
         // before inserting, set the UpdateDay value in format dd-MM-yyyy
-        c.setCodeUpdateDay(DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
+        currentCode.setCodeUpdateDay(DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
         repository.insertCode(c);
     }
 
-    public void updateCode(Code c) {
-        // before updating, set the UpdateDay value in format dd-MM-yyyy
-        c.setCodeUpdateDay(DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
-        repository.updateCode(c);
-    }
 
-    // check that a Code matching the given name does not already exists in current code list
+    // check that a Code matching the name of the given Code does not already exists in current code list
     // returns true if the name is NOT in the list
-    @Nullable
-    public boolean checkCodeName(@NonNull String name) {
-        List<Code> currentCodeList;
-        if (allcodes == null)
-            return true;
-        else
-            currentCodeList = allcodes.getValue();
-        if (currentCodeList == null) return true;
-        for (Code c : currentCodeList) {
-            if (c.getCodeName().equals(name)) {
-                return false;
+    public boolean codenameAlreadyExists(@NonNull Code code) {
+
+        if ((allcodes == null) || (allcodes.getValue() == null))
+            return false;
+
+        for (Code c : allcodes.getValue()) {
+            if (c.getCodeName().equals(code.getCodeName())) {
+                return true;
             }
         }
-        return true; // no match found
-    }
-
-
-    // search first Code matching given "dbId" in current code list
-    @Nullable
-    public Code getCodeWithId(int dbId){
-        List<Code> currentCodeList;
-        if (allcodes == null)
-            return null;
-        else
-            currentCodeList = allcodes.getValue();
-        if (currentCodeList == null)
-            return null;
-        for (Code c : currentCodeList) {
-            if (c.getCodeId() == dbId) {
-                return c;
-            }
-        }
-        return null;
+        return false; // no match found
     }
 }

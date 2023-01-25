@@ -2,7 +2,6 @@ package com.technoprimates.memotest.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,8 +43,8 @@ public class EditFragment extends Fragment {
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.action_add) {
-                    validate();
+                if (menuItem.getItemId() == R.id.action_save) {
+                    onSaveClicked();
                     return true;
                 }
             return false;
@@ -64,6 +63,7 @@ public class EditFragment extends Fragment {
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -129,8 +129,8 @@ public class EditFragment extends Fragment {
 
     }
 
-    public void validate() {
-
+    @SuppressWarnings("ConstantConditions")
+    private Code getUserInput() {
         // get user inputs
         String name = binding.contentCodename.getEditText().getText().toString();
         String value = binding.contentCodeval.getEditText().getText().toString();
@@ -141,7 +141,7 @@ public class EditFragment extends Fragment {
         if (name.equals("")) {
             binding.contentCodename.setError(getString(R.string.err_noname));
             binding.contentCodename.requestFocus();
-            return;
+            return null;
         } else {
             binding.contentCodename.setError(null);
             binding.contentCodename.setHelperTextEnabled(false);
@@ -150,61 +150,52 @@ public class EditFragment extends Fragment {
         if (value.equals("")) {
             binding.contentCodeval.setError(getString(R.string.err_nocodeval));
             binding.contentCodeval.requestFocus();
-            return;
+            return null;
         } else {
             binding.contentCodeval.setError(null);
             binding.contentCodeval.setHelperTextEnabled(false);
         }
 
-        // build Code object with user input
-        Code code = new Code(name, value, categ, protectMode);
+        // checks ok, build Code object with user input
+        return (new Code(name, value, categ, protectMode));
+    }
+
+    private void onSaveClicked () {
+        Code code = getUserInput();
+
+        // good effort User, please try again
+        if (code == null) return;
 
         if (!mUpdateMode) {
-            // Insert mode : insertion only if the name provided is not already in the database
-            if (!mViewModel.checkCodeName(name)) {
+            // Insertion
+            // Insert only if the name provided is not already in the database
+            if (mViewModel.codenameAlreadyExists(code)) {
                 // name already exists : refuse insertion
                 binding.contentCodename.setError(getString(R.string.err_name_already_exists));
                 binding.contentCodename.requestFocus();
+                return;
             } else {
-                // Do create the code and return to the List Fragment
+                // request the view model to insert the code
                 mViewModel.insertCode(code);
-                NavHostFragment.findNavController(EditFragment.this).navigate(R.id.action_EditFragment_to_ListFragment);
-                Log.wtf(TAG, "not possible?");
             }
             // (end of insert mode)
 
         } else {
-            // Update Mode
-            // prevent having duplicate code names in the database
-            // start with checking if the user changed the name of the code to update
-            if (!code.getCodeName().equals(mViewModel.getCurrentCode().getCodeName())) {
-                // the user provided a new name
-
-                if (!mViewModel.checkCodeName(name)) {
-                    // the new name is already in the database
-                    // refuse the update because it would result in 2 codes having the same name
-                    binding.contentCodename.setError(getString(R.string.err_name_already_exists));
-                    binding.contentCodename.requestFocus();
-
-                } else {
-                    // no existing code with this new name
-                    // delete the ancient code and insert a new one with the new name and other user inputs
-                    mViewModel.deleteCode(mViewModel.getCurrentCode().getCodeName());
-                    mViewModel.insertCode(code);
-                    // return to the Fragment List
-                    NavHostFragment.findNavController(EditFragment.this).navigate(R.id.action_EditFragment_to_ListFragment);
-                    Log.wtf(TAG, "not possible?");
-                }
-
+            // Update unless the user provided a new name
+            // and this name already exists in database
+            if ((!code.getCodeName().equals(mViewModel.getCurrentCode().getCodeName()))
+                    && (mViewModel.codenameAlreadyExists(code))) {
+                binding.contentCodename.setError(getString(R.string.err_name_already_exists));
+                binding.contentCodename.requestFocus();
+                return;
             } else {
-                // the user did not change the name of the code to update
-                // update and return to the Fragment List
+                // request the view model to update the code
                 mViewModel.updateCode(code);
-                NavHostFragment.findNavController(EditFragment.this).navigate(R.id.action_EditFragment_to_ListFragment);
-                Log.wtf(TAG, "not possible?");
             }
-            // (end of update mode)
         }
+
+        // save completed, return to the list fragment
+        NavHostFragment.findNavController(EditFragment.this).navigate(R.id.action_EditFragment_to_ListFragment);
     }
 
     @Override

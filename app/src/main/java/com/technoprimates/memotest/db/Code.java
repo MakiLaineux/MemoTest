@@ -31,14 +31,22 @@ public class Code {
 
 
     // Code constructor
-    // codeUpdateDay member is set to an empty String, it will be modified when inserting in database
-    // ProtectMode is set by default to NOT_FINGERPRINT_PROTECTED
+    // codeUpdateDay member is set to an empty String, it will be modified when inserting in or updating database
+    // this constructor does not set the database Id (codeId)
     public Code(String codeName, String codeValue, String codeCategory, int codeProtectMode) {
         this.codeName = codeName;
         this.codeValue=codeValue;
         this.codeCategory = codeCategory;
         this.codeUpdateDay = "";
         this.codeProtectMode = codeProtectMode;
+    }
+
+    // prepare code for updating
+    public void copyUIFields(Code c) {
+        this.codeName = c.codeName;
+        this.codeValue = c.codeValue;
+        this.codeCategory = c.codeCategory;
+        this.codeProtectMode = c.codeProtectMode;
     }
 
     public int getCodeId() {return this.codeId;}
@@ -49,7 +57,7 @@ public class Code {
     public int getCodeProtectMode() {return this.codeProtectMode;}
 
     public void setCodeId(int codeId) {this.codeId = codeId;}
-    public void setName(String codeName) {this.codeName = codeName;}
+    public void setCodename(String codeName) {this.codeName = codeName;}
     public void setCodeValue(String codeValue) {this.codeValue = codeValue;}
     public void setCodeCategory(String codeCategory) {this.codeCategory = codeCategory;}
     public void setCodeUpdateDay(String codeUpdateDay) {this.codeUpdateDay = codeUpdateDay;}
