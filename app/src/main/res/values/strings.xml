@@ -1,17 +1,17 @@
 <resources>
 
-    <string name="app_name">MemoTest</string>
+    <string name="app_name">MemoPlus</string>
 
     <!-- Menu strings -->
     <string name="menu_settings">Settings</string>
-    <string name="menu_save">Enregistrer</string>
-    <string name="menu_update">Modifier</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_update">Update</string>
 
     <!-- Strings used for fragment titles -->
-    <string name="title_list">Mes codes</string>
-    <string name="title_add">Nouveau code</string>
-    <string name="title_update">Modification</string>
-    <string name="title_view">Code</string>
+    <string name="title_list">My codes</string>
+    <string name="title_add">New code</string>
+    <string name="title_update">Edit code</string>
+    <string name="title_view">View code</string>
 
     <!-- Strings for Toast messages -->
     <string name="toast_lockscreen_not_enabled">Lockscreen security not enabled in Settings</string>
@@ -26,17 +26,23 @@
     <string name="prompt_code_protected_by_fingerprint">This code is protected by fingerprint authentication</string>
 
     <!-- TextInputLayout hints -->
-    <string name="txt_category">Catégorie</string>
-    <string name="txt_codename">Nom</string>
+    <string name="txt_category">Category</string>
+    <string name="txt_codename">Name</string>
     <string name="txt_codeval">Code</string>
     <string name="txt_checkbox_fingerprint">Protected by fingerprint</string>
+    <string name="helper_name">Choose a name for this code</string>
+    <string name="helper_codeval">Enter the code\'s value</string>
+    <string name="helper_category">Choose a category</string>
+    <string name="err_noname">No Name value</string>
+    <string name="err_nocodeval">No code value</string>
+    <string name="err_name_already_exists">Name already exists</string>
 
     <!-- Category items -->
     <string-array name="categs">
-        <item>CB</item>
-        <item>Banque</item>
+        <item>Cards</item>
+        <item>Bank</item>
         <item>Home</item>
         <item>PIN</item>
-        <item>Divers</item>
+        <item>Various</item>
     </string-array>
 </resources>

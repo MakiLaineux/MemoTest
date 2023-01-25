@@ -139,7 +139,7 @@ public class EditFragment extends Fragment {
 
         // check name, value and categ
         if (name.equals("")) {
-            binding.contentCodename.setError("No Name value");
+            binding.contentCodename.setError(getString(R.string.err_noname));
             binding.contentCodename.requestFocus();
             return;
         } else {
@@ -148,7 +148,7 @@ public class EditFragment extends Fragment {
         }
 
         if (value.equals("")) {
-            binding.contentCodeval.setError("No code value");
+            binding.contentCodeval.setError(getString(R.string.err_nocodeval));
             binding.contentCodeval.requestFocus();
             return;
         } else {
@@ -163,9 +163,8 @@ public class EditFragment extends Fragment {
             // Insert mode : insertion only if the name provided is not already in the database
             if (!mViewModel.checkCodeName(name)) {
                 // name already exists : refuse insertion
-                binding.contentCodename.setError("Name already exists");
+                binding.contentCodename.setError(getString(R.string.err_name_already_exists));
                 binding.contentCodename.requestFocus();
-                return;
             } else {
                 // Do create the code and return to the List Fragment
                 mViewModel.insertCode(code);
@@ -184,7 +183,7 @@ public class EditFragment extends Fragment {
                 if (!mViewModel.checkCodeName(name)) {
                     // the new name is already in the database
                     // refuse the update because it would result in 2 codes having the same name
-                    binding.contentCodename.setError("Name already exists");
+                    binding.contentCodename.setError(getString(R.string.err_name_already_exists));
                     binding.contentCodename.requestFocus();
 
                 } else {
