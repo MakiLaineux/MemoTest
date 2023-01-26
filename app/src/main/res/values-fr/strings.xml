@@ -10,10 +10,10 @@
     <string name="menu_about">A propos</string>
 
     <!-- Strings used for fragment titles -->
-    <string name="title_list">Mes codes</string>
+    <string name="title_list">Memo Plus</string>
     <string name="title_add">Nouveau code</string>
     <string name="title_update">Modification</string>
-    <string name="title_view">Code</string>
+    <string name="title_view">Visu code</string>
 
     <!-- Strings for Toast messages -->
     <string name="toast_lockscreen_not_enabled">Le verrouillage de l\'écran doit être activé</string>

@@ -10,10 +10,10 @@
     <string name="menu_about">About</string>
 
     <!-- Strings used for fragment titles -->
-    <string name="title_list">My codes</string>
+    <string name="title_list">Memo Plus</string>
     <string name="title_add">New code</string>
     <string name="title_update">Edit code</string>
-    <string name="title_view">View code</string>
+    <string name="title_view">Saved code</string>
 
     <!-- Strings for Toast messages -->
     <string name="toast_lockscreen_not_enabled">Lockscreen security not enabled in Settings</string>

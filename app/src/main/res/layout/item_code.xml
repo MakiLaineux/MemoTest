@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/card_code"
     android:layout_margin="4dp"
-    app:cardBackgroundColor="?colorPrimaryVariant"
-    app:cardCornerRadius="4dp"
+    app:cardBackgroundColor="?colorPrimary"
+    app:cardCornerRadius="6dp"
     app:cardElevation="5dp"
     app:contentPadding="4dp">
 
@@ -15,58 +15,28 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/txtdbId"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:gravity="center_vertical"
-            android:text="@string/dbid"
-            android:textColor="?colorOnPrimary"
-            android:textSize="11sp"
-            app:layout_constraintEnd_toStartOf="@+id/dbId"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <TextView
-            android:id="@+id/txtrvId"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:gravity="center_vertical"
-            android:text="@string/rvid"
-            android:textColor="?colorOnPrimary"
-            android:textSize="11sp"
-            app:layout_constraintEnd_toStartOf="@+id/rvId"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtdbId" />
-        <TextView
             android:id="@+id/dbId"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:gravity="center_vertical"
             android:text="@string/dbidtxtt"
-            android:textColor="?colorOnPrimary"
             android:textSize="11sp"
             app:layout_constraintEnd_toStartOf="@+id/categ"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/txtdbId"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/rvId"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:gravity="center_vertical"
             android:text="@string/rvidtxt"
-            android:textColor="?colorOnPrimary"
             android:textSize="11sp"
             app:layout_constraintEnd_toStartOf="@+id/categ"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/txtrvId"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dbId" />
-
         <TextView
             android:id="@+id/categ"
             android:layout_width="0dp"

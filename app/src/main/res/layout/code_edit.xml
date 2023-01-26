@@ -27,8 +27,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_codename"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#757575" />
+            android:layout_height="wrap_content"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,8 +53,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_codeval"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#757575" />
+            android:layout_height="wrap_content"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

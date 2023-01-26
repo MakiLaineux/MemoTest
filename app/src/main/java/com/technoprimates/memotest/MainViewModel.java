@@ -48,6 +48,8 @@ public class MainViewModel extends AndroidViewModel {
 
     public void insertCode(Code c) {
         currentCode = c;
+        // reset db key to 0
+        currentCode.setCodeId(0);
         // before inserting, set the UpdateDay value in format dd-MM-yyyy
         currentCode.setCodeUpdateDay(DateFormat.format("dd-MM-yyyy", new java.util.Date()).toString());
         repository.insertCode(c);

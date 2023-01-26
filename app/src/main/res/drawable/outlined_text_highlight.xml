@@ -2,12 +2,12 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <solid
-        android:color="?colorPrimaryContainer" >
+        android:color="?colorPrimary" >
     </solid>
 
     <stroke
-        android:width="1dip"
-        android:color="?colorOnPrimaryContainer">
+        android:width="3dp"
+        android:color="?colorOnSurface">
     </stroke>
 
     <corners
