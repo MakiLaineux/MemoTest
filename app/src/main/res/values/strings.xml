@@ -35,9 +35,13 @@
     <string name="txt_codename">Name</string>
     <string name="txt_codeval">Code</string>
     <string name="txt_checkbox_fingerprint">Protected by fingerprint</string>
+    <string name="txt_comments">comments</string>
     <string name="helper_name">Choose a name for this code</string>
     <string name="helper_codeval">Enter the code\'s value</string>
     <string name="helper_category">Choose a category</string>
+    <string name="helper_comments">Optionnal comments</string>
+
+    <!-- Error messages -->
     <string name="err_noname">No Name value</string>
     <string name="err_nocodeval">No code value</string>
     <string name="err_name_already_exists">Name already exists</string>
@@ -51,12 +55,15 @@
     <string name="category">category</string>
     <string name="codename">codename</string>
     <string name="udate_day">udate day</string>
+    <string name="comments">comments</string>
 
     <!-- Category items -->
     <string-array name="categs">
         <item>Cards</item>
+        <item>Login</item>
+        <item>Work</item>
         <item>Bank</item>
-        <item>Home</item>
+        <item>Doors</item>
         <item>PIN</item>
         <item>Various</item>
     </string-array>

@@ -76,6 +76,7 @@ public class EditFragment extends Fragment {
             binding.contentCodename.getEditText().setText(mViewModel.getCurrentCode().getCodeName());
             binding.contentCodeval.getEditText().setText(mViewModel.getCurrentCode().getCodeValue());
             binding.contentCategory.getEditText().setText(mViewModel.getCurrentCode().getCodeCategory());
+            binding.contentComments.getEditText().setText(mViewModel.getCurrentCode().getCodeComments());
 
             // Set the fragment title
             ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(R.string.title_update);
@@ -86,6 +87,7 @@ public class EditFragment extends Fragment {
             binding.contentCodename.getEditText().setText("");
             binding.contentCodeval.getEditText().setText("");
             binding.contentCategory.getEditText().setText("");
+            binding.contentComments.getEditText().setText("");
 
             // Set the fragment title
             ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(R.string.title_add);
@@ -135,6 +137,7 @@ public class EditFragment extends Fragment {
         String name = binding.contentCodename.getEditText().getText().toString();
         String value = binding.contentCodeval.getEditText().getText().toString();
         String categ = binding.contentCategory.getEditText().getText().toString();
+        String comments = binding.contentComments.getEditText().getText().toString();
         int protectMode = binding.checkboxFingerprint.isChecked() ? Code.FINGERPRINT_PROTECTED : Code.NOT_FINGERPRINT_PROTECTED;
 
         // check name, value and categ
@@ -157,7 +160,7 @@ public class EditFragment extends Fragment {
         }
 
         // checks ok, build Code object with user input
-        return (new Code(name, value, categ, protectMode));
+        return (new Code(name, value, categ, comments, protectMode));
     }
 
     private void onSaveClicked () {

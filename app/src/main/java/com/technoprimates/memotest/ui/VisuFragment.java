@@ -1,6 +1,7 @@
 package com.technoprimates.memotest.ui;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -81,6 +82,8 @@ public class VisuFragment extends Fragment {
         binding.dispCodename.setText(code.getCodeName());
         binding.dispCodeval.setText(code.getCodeValue());
         binding.checkboxFingerprint.setChecked(code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED);
+        binding.dispComments.setText(code.getCodeComments());
+        binding.dispComments.setMovementMethod(new ScrollingMovementMethod());
     }
 
     @Override

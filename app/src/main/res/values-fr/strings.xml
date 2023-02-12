@@ -35,9 +35,11 @@
     <string name="txt_codename">Nom</string>
     <string name="txt_codeval">Code</string>
     <string name="txt_checkbox_fingerprint">Protégé par empreinte digitale</string>
+    <string name="txt_comments">Commentaires</string>
     <string name="helper_name">Entrez un nom pour le code</string>
     <string name="helper_codeval">Entrez la valeur du code</string>
     <string name="helper_category">Choisissez une catégorie</string>
+    <string name="helper_comments">Commentaires oprionnels</string>
 
     <!-- Error messages -->
     <string name="err_noname">Entrez un nom pour le code</string>
@@ -53,12 +55,15 @@
     <string name="category">category</string>
     <string name="codename">codename</string>
     <string name="udate_day">udate day</string>
+    <string name="comments">comments</string>
 
     <!-- Category items -->
     <string-array name="categs">
         <item>CB</item>
-        <item>Banque</item>
-        <item>Maison</item>
+        <item>Login</item>
+        <item>Travail</item>
+        <item>Banque et assurance</item>
+        <item>Digicodes</item>
         <item>PIN</item>
         <item>Divers</item>
     </string-array>
