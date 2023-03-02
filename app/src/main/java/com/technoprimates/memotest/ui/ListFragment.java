@@ -1,6 +1,5 @@
 package com.technoprimates.memotest.ui;
 
-import android.content.DialogInterface;
 import android.hardware.biometrics.BiometricPrompt;
 import android.hardware.biometrics.BiometricPrompt.AuthenticationCallback;
 import android.os.Bundle;
@@ -14,11 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -26,19 +23,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.technoprimates.memotest.MainViewModel;
+import com.technoprimates.memotest.CodeViewModel;
 import com.technoprimates.memotest.R;
 import com.technoprimates.memotest.databinding.FragmentListBinding;
 import com.technoprimates.memotest.db.Code;
 
-import java.util.List;
-
 public class ListFragment extends Fragment implements CodeListAdapter.CodeActionListener {
 
-    private MainViewModel mViewModel;
+    // ViewModel scoped to the Activity
+    private CodeViewModel mViewModel;
+
+    // binding
     private FragmentListBinding binding;
+
+    // Adapter for the RecyclerView
     private CodeListAdapter adapter;
-    private Code currentCode;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,11 +74,14 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        // Floating action button : add a new code
+        // Creates the ViewModel instance
+        mViewModel = new ViewModelProvider(requireActivity()).get(CodeViewModel.class);
+
+        // Floating action button for adding a new Code item
         binding.fab.setOnClickListener(view1 -> {
-            // set CurrentCode of the ViewModel to null
-            mViewModel.setCurrentCode(null);
+            // Set in the ViewModel the action to process, no db-existing Code required in this case
+            mViewModel.selectActionToProcess(Code.MODE_INSERT);
+            mViewModel.selectCodeToProcess(null);
 
             // navigate to editFragment
             NavHostFragment.findNavController(ListFragment.this)
@@ -95,6 +97,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
         binding = null;
     }
 
+    // Observe the LiveData List of Codes
     private void observerSetup() {
         mViewModel.getAllcodes().observe(getViewLifecycleOwner(),
                 codes -> {
@@ -102,6 +105,7 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
                 });
     }
 
+    //Sets the RecyclerView
     private void recyclerSetup() {
         adapter = new CodeListAdapter(R.layout.item_code, this);
         binding.codeRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -126,16 +130,18 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
     /**
      * {@inheritDoc}
-     * This triggers immediately a navigation to the Visualization Fragment.
-     * If the Code is protected by fingerprint, a authentication is performed first.
+     * <p>This triggers a navigation to the Visualization Fragment.
+     * If the Code is protected by fingerprint, a authentication is performed first.</p>
      */
     @Override
-    public void onCodeClicked(int pos) {
-        currentCode = adapter.getCodeAtPos(pos);
-        if (currentCode == null) return;
+    public void onCodeClicked(Code code) {
+
+        // Set in the ViewModel the action to process, and the Code to process
+        mViewModel.selectActionToProcess(Code.MODE_VISU);
+        mViewModel.selectCodeToProcess(code);
 
         // check if the Code is fingerprint protected
-        if (currentCode.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED) {
+        if (code.getCodeProtectMode() == Code.FINGERPRINT_PROTECTED) {
 
             // Code protected : Ask for the user's fingerprint
             BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(getActivity())
@@ -150,19 +156,11 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
 
         } else {
             // No authentication required : navigate to visualization of currentCode
-            navigateToCodeVisu();
+            NavHostFragment.findNavController(ListFragment.this)
+                    .navigate(R.id.action_ListFragment_to_VisuFragment);
         }
     }
 
-
-    /**
-     * Navigate to the visualization fragment
-     */
-    private void navigateToCodeVisu() {
-        mViewModel.setCurrentCode(currentCode);
-        NavHostFragment.findNavController(ListFragment.this)
-                .navigate(R.id.action_ListFragment_to_VisuFragment);
-    }
 
     public void onDeleteCodeRequest(int pos) {
 
@@ -170,11 +168,21 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
         Code code = adapter.getCodeAtPos(pos);
         if (code == null) return;
 
-        mViewModel.deleteCode(code.getCodeName());
+        // Set in the ViewModel the action to process, and the Code to process
+        mViewModel.selectActionToProcess(Code.MODE_DELETE);
+        mViewModel.selectCodeToProcess(code);
+        mViewModel.deleteCode();
 
         // show snackbar with undo button
         Snackbar snackbar = Snackbar.make(binding.codeRecycler, "Code deleted at pos : "+pos, Snackbar.LENGTH_LONG);
-        snackbar.setAction("UNDO", view -> mViewModel.insertCode(code));
+        //
+        snackbar.setAction("UNDO", view -> {
+            // Set in the ViewModel the action to process, and the Code to process
+            mViewModel.selectActionToProcess(Code.MODE_INSERT);
+            mViewModel.selectCodeToProcess(code);
+            // Re-insert the Code
+            mViewModel.reInsertCode();
+        });
         snackbar.show();
     }
 
@@ -198,7 +206,10 @@ public class ListFragment extends Fragment implements CodeListAdapter.CodeAction
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
                 Toast.makeText(getActivity(), getString(R.string.toast_authentication_success), Toast.LENGTH_LONG).show();
                 super.onAuthenticationSucceeded(result);
-                navigateToCodeVisu();
+
+                // Navigate to the visualization fragment
+                NavHostFragment.findNavController(ListFragment.this)
+                        .navigate(R.id.action_ListFragment_to_VisuFragment);
             }
 
             @Override

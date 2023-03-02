@@ -1,13 +1,9 @@
 package com.technoprimates.memotest.db;
 
 import android.app.Application;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -15,25 +11,11 @@ import java.util.concurrent.Executors;
 
 public class CodeRepository {
 
-    // LiveData for the list of codes used by the RecyclerView, initialized in constructor
+    /** Livedata list of all the codes in the database   */
     private final LiveData<List<Code>> allCodes;
 
-    // LiveData for search (why livedata?)
-    private final MutableLiveData<List<Code>> searchResults = new MutableLiveData<>();
-
-    // result of Code select queries
-    private List<Code> results;
-
-    // instance of Dao
+    /** Dao instance */
     private final CodeDao codeDao;
-
-    // a Handler receiving messages from the dao methods threads when a query has produced results
-    Handler handler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            searchResults.setValue(results);
-        }
-    };
 
     // Constructor
     public CodeRepository(Application application) {
@@ -42,48 +24,41 @@ public class CodeRepository {
         allCodes = codeDao.getAllCodes();
     }
 
-    // calls of DAO methods in separate threads
-    public void insertCode(@NonNull Code c) {
+    /**
+     * Insert a <code>Code</code> in the database
+     * @param code  The <code>Code</code> to insert
+     */
+    public void insertCode(@NonNull Code code) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            codeDao.insertCode(c);
-        });
+        executor.submit(() -> codeDao.insertCode(code));
         executor.shutdown();
     }
 
-    public void deleteCode(@NonNull String name) {
+    /**
+     * Deletes all <code>Code</code> records matching the given db id
+     * @param codeId  database Id of the Code to delete
+     */
+    public void deleteCode(int codeId) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            codeDao.deleteCode(name);
-        });
+        executor.submit(() -> codeDao.deleteCode(codeId));
         executor.shutdown();
     }
 
-    public void findCode(@NonNull String name) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            results = codeDao.findCode(name);
-            handler.sendEmptyMessage(0);
-        });
-        executor.shutdown();
-    }
-
+    /**
+     * Update a <code>Code</code> in database
+     * @param code : the Code to update.
+     */
     public void updateCode(@NonNull Code code) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            codeDao.updateCode(code);
-            handler.sendEmptyMessage(0);
-        });
+        executor.submit(() -> codeDao.updateCode(code));
         executor.shutdown();
     }
 
-    // get reference to LiveData object
+    /**
+     * Get a Livedata List of all codes in database
+     * @return A {@code Livedata<List<Code>>} object of all codes in database
+     */
     public LiveData<List<Code>> getAllCodes() {
         return allCodes;
     }
-
-    public MutableLiveData<List<Code>> getSearchResults() {
-        return searchResults;
-    }
-
 }

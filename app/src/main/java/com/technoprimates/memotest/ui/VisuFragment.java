@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +18,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.technoprimates.memotest.MainViewModel;
+import com.technoprimates.memotest.CodeViewModel;
 import com.technoprimates.memotest.R;
 import com.technoprimates.memotest.databinding.CodeViewBinding;
 import com.technoprimates.memotest.db.Code;
@@ -29,13 +28,12 @@ public class VisuFragment extends Fragment {
 
     public static final String TAG = "VISUFRAG";
     private CodeViewBinding binding;
-    private MainViewModel mViewModel;
+    private CodeViewModel mViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-
+        mViewModel = new ViewModelProvider(requireActivity()).get(CodeViewModel.class);
     }
 
     @Override
@@ -46,14 +44,15 @@ public class VisuFragment extends Fragment {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.menu_visu, menu);
-
-                // Add option Menu Here
-
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.action_edit) {
+                    // Set in the ViewModel the action to process
+                    // The Code to process is already set in the ViewModel
+                    mViewModel.selectActionToProcess(Code.MODE_UPDATE);
+
                     // Navigate to EditFragment
                     NavHostFragment.findNavController(VisuFragment.this)
                             .navigate(R.id.action_VisuFragment_to_EditFragment);
@@ -71,7 +70,7 @@ public class VisuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Code code = mViewModel.getCurrentCode();
+        Code code = mViewModel.getCodeToProcess();
         if (code == null) {
             Log.e(TAG, "Error : no CurrentCode");
             return;

@@ -11,24 +11,26 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 @Database(entities = {Code.class}, version = 2)
 public abstract class CodeRoomDatabase extends RoomDatabase {
     public abstract CodeDao codeDao();
-    private static CodeRoomDatabase INSTANCE;
+    private static volatile CodeRoomDatabase INSTANCE;
 
     // Database version 2 adds the "comments" field
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE codes "
-                    + " ADD COLUMN cComments TEXT");            // Since we didn't alter the table, there's nothing else to do here.
+                    + " ADD COLUMN cComments TEXT");
         }
     };
 
     static CodeRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (CodeRoomDatabase.class) {
-                INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                CodeRoomDatabase.class, "code-database")
-                        .addMigrations(MIGRATION_1_2)
-                        .build();
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                                    CodeRoomDatabase.class, "code-database")
+                            .addMigrations(MIGRATION_1_2)
+                            .build();
+                }
             }
         }
         return INSTANCE;

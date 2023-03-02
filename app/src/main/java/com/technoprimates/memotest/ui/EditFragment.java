@@ -2,6 +2,7 @@ package com.technoprimates.memotest.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,17 +20,26 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.technoprimates.memotest.MainViewModel;
+import com.google.android.material.textfield.TextInputLayout;
+import com.technoprimates.memotest.CodeViewModel;
 import com.technoprimates.memotest.R;
 import com.technoprimates.memotest.databinding.CodeEditBinding;
 import com.technoprimates.memotest.db.Code;
 
+import java.util.Objects;
+
 public class EditFragment extends Fragment {
 
     public static final String TAG = "EDITFRAG";
+
+    //binding
     private CodeEditBinding binding;
-    private MainViewModel mViewModel;
-    private boolean mUpdateMode;
+
+    // ViewModel scoped to the Activity
+    private CodeViewModel mViewModel;
+
+    // Action to process (INSERT, UPDATE)
+    private int mAction;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,43 +64,42 @@ public class EditFragment extends Fragment {
         // binding
         binding = CodeEditBinding.inflate(inflater, container, false);
         return binding.getRoot();
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-
+        mViewModel = new ViewModelProvider(requireActivity()).get(CodeViewModel.class);
+        mAction = mViewModel.getActionMode();
     }
 
-    @SuppressWarnings("ConstantConditions")
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Check if a new Code is to be created or if an existing one is to be updated
-        if (mViewModel.getCurrentCode() != null) {
-            // update an existing code available in the ViewModel
-            mUpdateMode = true;
+        switch (mAction) {
 
-            // fill the fields with existing code
-            binding.contentCodename.getEditText().setText(mViewModel.getCurrentCode().getCodeName());
-            binding.contentCodeval.getEditText().setText(mViewModel.getCurrentCode().getCodeValue());
-            binding.contentCategory.getEditText().setText(mViewModel.getCurrentCode().getCodeCategory());
-            binding.contentComments.getEditText().setText(mViewModel.getCurrentCode().getCodeComments());
+            case Code.MODE_UPDATE:
+                // update an existing code available in the ViewModel
+                // fill the fields with existing code
+                setString(binding.contentCodename, mViewModel.getCodeToProcess().getCodeName());
+                setString(binding.contentCodeval, mViewModel.getCodeToProcess().getCodeValue());
+                setString(binding.contentCategory, mViewModel.getCodeToProcess().getCodeCategory());
+                setString(binding.contentComments, mViewModel.getCodeToProcess().getCodeComments());
+                binding.checkboxFingerprint.setChecked((mViewModel.getCodeToProcess().getCodeProtectMode()) == Code.FINGERPRINT_PROTECTED) ;
+                // Set the fragment title
+                Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.title_update);
+                break;
 
-            // Set the fragment title
-            ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(R.string.title_update);
-
-        } else {
-            // insert a new code
-            mUpdateMode = false;
-            binding.contentCodename.getEditText().setText("");
-            binding.contentCodeval.getEditText().setText("");
-            binding.contentCategory.getEditText().setText("");
-            binding.contentComments.getEditText().setText("");
-
-            // Set the fragment title
-            ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(R.string.title_add);
+            case Code.MODE_INSERT:
+                // insert a new code : start with empty fields
+                setString(binding.contentCodename, "");
+                setString(binding.contentCodeval, "");
+                setString(binding.contentCategory, "");
+                setString(binding.contentComments, "");
+                binding.checkboxFingerprint.setChecked(false);
+                // Set the fragment title
+                Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.title_add);
         }
 
         // start with focus on first input
@@ -131,16 +140,21 @@ public class EditFragment extends Fragment {
 
     }
 
-    @SuppressWarnings("ConstantConditions")
+
+    /**
+     * Gets user inputs and perform basic checks.
+     *
+     * @return A Code object containing user input
+     */
     private Code getUserInput() {
         // get user inputs
-        String name = binding.contentCodename.getEditText().getText().toString();
-        String value = binding.contentCodeval.getEditText().getText().toString();
-        String categ = binding.contentCategory.getEditText().getText().toString();
-        String comments = binding.contentComments.getEditText().getText().toString();
+        String name = getString(binding.contentCodename);
+        String value = getString(binding.contentCodeval);
+        String categ = getString(binding.contentCategory);
+        String comments = getString(binding.contentComments);
         int protectMode = binding.checkboxFingerprint.isChecked() ? Code.FINGERPRINT_PROTECTED : Code.NOT_FINGERPRINT_PROTECTED;
 
-        // check name, value and categ
+        // check name, value
         if (name.equals("")) {
             binding.contentCodename.setError(getString(R.string.err_noname));
             binding.contentCodename.requestFocus();
@@ -166,35 +180,34 @@ public class EditFragment extends Fragment {
     private void onSaveClicked () {
         Code code = getUserInput();
 
-        // good effort User, please try again
-        if (code == null) return;
-
-        if (!mUpdateMode) {
-            // Insertion
-            // Insert only if the name provided is not already in the database
-            if (mViewModel.codenameAlreadyExists(code)) {
-                // name already exists : refuse insertion
+        // perform checks via ViewModel and handle errors
+        switch (mViewModel.checkCodeBusinessLogic(code, mAction)) {
+            // Code must be not null and code name must not be empty
+            case CodeViewModel.NO_CODE:
+            case CodeViewModel.NO_CODENAME:
+                return;
+            // Cannot overwrite existing code
+            case CodeViewModel.CODENAME_ALREADY_EXISTS:
                 binding.contentCodename.setError(getString(R.string.err_name_already_exists));
                 binding.contentCodename.requestFocus();
                 return;
-            } else {
-                // request the view model to insert the code
-                mViewModel.insertCode(code);
-            }
-            // (end of insert mode)
+            case CodeViewModel.CODE_OK:
+                break;
+            default:
+                Log.e(TAG, "Checking code : unexpected return value");
+        }
+
+        if (mAction == Code.MODE_INSERT) {
+            // set Insertion mode and Code to process in the ViewModel
+            mViewModel.selectActionToProcess(Code.MODE_INSERT);
+            mViewModel.selectCodeToProcess(code);
+            mViewModel.insertCode();
 
         } else {
-            // Update unless the user provided a new name
-            // and this name already exists in database
-            if ((!code.getCodeName().equals(mViewModel.getCurrentCode().getCodeName()))
-                    && (mViewModel.codenameAlreadyExists(code))) {
-                binding.contentCodename.setError(getString(R.string.err_name_already_exists));
-                binding.contentCodename.requestFocus();
-                return;
-            } else {
-                // request the view model to update the code
-                mViewModel.updateCode(code);
-            }
+            mViewModel.selectActionToProcess(Code.MODE_UPDATE);
+            assert code != null;
+            mViewModel.fillCodeToProcess(code);
+            mViewModel.updateCode();
         }
 
         // save completed, return to the list fragment
@@ -205,5 +218,14 @@ public class EditFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    // utility methods for TextInputLayout
+    private String getString(TextInputLayout textInputLayout) {
+        return ((textInputLayout.getEditText() == null)? "" : textInputLayout.getEditText().getText().toString());
+    }
+    private void setString(TextInputLayout textInputLayout, String s) {
+        if (textInputLayout.getEditText() != null)
+            textInputLayout.getEditText().setText(s);
     }
 }
