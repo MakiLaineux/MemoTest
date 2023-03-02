@@ -65,8 +65,6 @@ public class CodeListAdapter extends RecyclerView.Adapter<CodeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final CodeViewHolder holder, final int listPosition) {
-        holder.item_dbId.setText(String.valueOf(codeList.get(listPosition).getCodeId()));
-        holder.item_rvId.setText(String.valueOf(listPosition));
         holder.item_categ.setText(codeList.get(listPosition).getCodeCategory());
         holder.item_codeName.setText(codeList.get(listPosition).getCodeName());
         holder.item_codeUpdateDay.setText(codeList.get(listPosition).getCodeUpdateDay());
